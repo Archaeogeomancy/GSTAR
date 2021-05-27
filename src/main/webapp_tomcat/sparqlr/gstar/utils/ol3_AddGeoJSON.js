@@ -1,0 +1,7 @@
+function addGJ(geojsonurl, map){}
+
+
+	
+
+
+}

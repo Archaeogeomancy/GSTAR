@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="gstar/VocabDropDowns.js"></script>
+		
+
+		
+	</head>
+	<body>
+
+		<select id="dropdown_Vocabularies"></select>
+		<select id="dropdown_Values"></select>
+		
+		
+		<script type='text/javascript'>	
+			$("#dropdown_Vocabularies").change(function(){
+				setSubSelect($(this).val(),"#dropdown_Values");
+			});
+
+		</script>
+		
+	</body>
+	
+</html>

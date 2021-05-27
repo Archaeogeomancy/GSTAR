@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>GSTAR web map</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<!-- JQuery -->
+		<script src="lib/jquery/jquery-1.12.0.min.js"></script>
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="lib/bootstrap/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+		<script src="lib/bootstrap/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+		
+		<!-- OpenLayers -->
+		<link rel="stylesheet" href="lib/ol3/ol.css" />
+		<link rel="stylesheet" href="lib/ol3-popup/src/ol3-popup.css" />
+		
+		<!-- GSTAR -->
+		<link rel="stylesheet" href="gstar/gstarmap.css" />
+		<link rel="stylesheet" href="gstar/gstar.css" />
+		
+		<!-- Popup Multi select -->
+		<link rel="stylesheet" media="all" href="lib/popupmulti/stylesheets/multiselect.min.css">
+		
+		<!-- SENESCHAL -->
+		<script src="lib/seneschal/usw.seneschal.20140619-min.js"></script>
+		<link rel="stylesheet" type="text/css" href="lib/seneschal/usw.seneschal.20140203.css">
+		
+		<!--layerswitcher css-->
+		<link rel="stylesheet" href="lib/ol3-layerswitcher/src/ol3-layerswitcher.css" />
+		
+		<!--this script creates and uses the widget-->
+		<script src="lib/popupmulti/javascripts/multiselect.min.js"></script>
+		<script src="gstar/gstarmapquery.js"></script>
+		
+		<!-- SVG plugin http://keith-wood.name/svg.html -->
+		<link rel="stylesheet" type="text/css" href="lib/jquery.svg.package-1.5.0/jquery.svg.css"> 
+		<script type="text/javascript" src="lib/jquery.svg.package-1.5.0/jquery.svg.js"></script>
+		
+
+
+  
+  
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<!-- Map elements container-->
+				<div class="col-md-8">
+					<!-- Map element-->
+					<div id="map" class="map">
+						<!-- feedback element-->
+						<div class="row-fluid">
+							<div id="info" class="alert alert-success">
+							&nbsp;
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Query container-->
+				<div id="main" class="col-md-4">
+					<div class="row">
+						<div class="col-lg-12">
+							<ul class="nav nav-tabs">
+								<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+								<li><a data-toggle="tab" href="#menu1">Monuments by Type</a></li>
+								<li><a data-toggle="tab" href="#menu2">Monuments by Period</a></li>
+								<li><a data-toggle="tab" href="#menu3">Objects by Type</a></li>
+								<li><a data-toggle="tab" href="#menu4">Objects by Period</a></li>
+								<li><a data-toggle="tab" href="#menu5">Objects by Material</a></li>
+							</ul>
+
+							<div class="tab-content">
+								<div id="home" class="tab-pane fade in active">
+									<h3>Query Builder</h3>
+									<p>Use the options here to make selections and display the results on the map.</p>
+								</div>
+								<div id="menu1" class="tab-pane fade">
+									<h3>Monuments by Type</h3>
+									<div class="col-lg-1">
+										<p>Select values:</p>	
+									</div>
+									<div class="col-lg-9">
+										<select multiple name="vocabulary term" id="montype">
+										</select>
+									</div>
+									<div class="col-lg-2">
+										<button id="montypemapbtn" type="button" class="btn btn-default btn-block add2map">Add to map</button>
+									</div>
+
+								</div>
+								<div id="menu2" class="tab-pane fade">
+									<h3>Monuments by Period</h3>
+									<div class="col-lg-1">
+										<p>Select values:</p>	
+									</div>
+									<div class="col-lg-9">
+										<select multiple name="vocabulary term" id="monperiod">
+										</select>
+									</div>
+									<div class="col-lg-2">
+										<button id="monperiodmapbtn" type="button" class="btn btn-default btn-block add2map">Add to map</button>
+									</div>
+
+								</div>
+								<div id="menu3" class="tab-pane fade">
+									<h3>Objects by Type</h3>
+									<div class="col-lg-1">
+										<p>Select values:</p>	
+									</div>
+									<div class="col-lg-9">
+										<select multiple name="vocabulary term" id="objtype">
+										</select>
+									</div>
+									<div class="col-lg-2">
+										<button id="objtypemapbtn" type="button" class="btn btn-default btn-block add2map">Add to map</button>
+									</div>
+								</div>
+								<div id="menu4" class="tab-pane fade">
+									<h3>Objects by Period</h3>
+									<div class="col-lg-1">
+										<p>Select values:</p>	
+									</div>
+									<div class="col-lg-9">
+										<select multiple name="vocabulary term" id="objperiod">
+										</select>
+									</div>
+									<div class="col-lg-2">
+										<button id="objperiodmapbtn" type="button" class="btn btn-default btn-block add2map">Add to map</button>
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<h3>EH Period Thesaurus</h3>
+											<div class="col-lg-6">
+												<div id="myTermSearch" style="width: 300px; height: 300px;"></div>				
+											</div>
+											<div class="col-lg-6">
+												<div id="myConceptDetailsComposite" style="width: 300px; height: 300px;"></div>
+												<br>
+												<div id="mySelection" style="width: 300px; height: 100px;"></div>
+												<div id="resultsToPop">
+													<button id="objperiodtrmbtn" type="button" class="btn btn-default btn-block addterms">Add Related Terms</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="menu5" class="tab-pane fade">
+									<h3>Objects by Material</h3>
+									<div class="col-lg-1">
+										<p>Select values:</p>	
+									</div>
+									<div class="col-lg-9">
+										<select multiple name="vocabulary term" id="objmaterial">
+										</select>
+									</div>
+									<div class="col-lg-2">
+										<button id="objmaterialmapbtn" type="button" class="btn btn-default btn-block add2map">Add to map</button>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div id="maplegends" class="col-md-12">
+				<h3>Layer Legends</h3>
+				<div id="svgbasics"></div>
+				</div>
+				<div id="testdump">
+				</div>
+			</div>
+		</div								 
+
+	
+	
+
+		
+		<script src="common/lib/reqwest.min.js"></script>
+		<script src="lib/proj4.js"></script>
+		<script src="lib/ol3/ol.js"></script>
+		<script src="lib/ol3-popup/src/ol3-popup.js"></script>
+		<script src="lib/ol3-layerswitcher/src/ol3-layerswitcher.js"></script>
+		<script src="gstar/gstarmap.js"></script>
+		<script src="gstar/gstarmapinfo.js"></script>
+		
+		
+		
+
+	</body>
+</html>

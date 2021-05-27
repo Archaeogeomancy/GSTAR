@@ -1,0 +1,77 @@
+
+<html>
+<head>
+<script src='http://openlayers.org/api/OpenLayers.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script>
+var map;
+var bounds = new OpenLayers.Bounds (0, 0, 700000, 1300000);
+var apikey = "d0ae6867c79e312f1f2171dbe448c6f934c9b9e6277f533b1abf804eac8f266f";
+var cache = "true"; 
+var attr = "Contains Ordnance Survey data. (c) Crown copyright and database right 20XX. Data provided by Digimap OpenStream, an EDINA, University of Edinburgh Service.";
+var os_options = {
+        token: apikey,
+        format: "image/png",
+        layers: "osopendata",
+        cache: cache
+};
+
+function init() {
+
+	map = new OpenLayers.Map('map', {controls: [], 
+	projection: new OpenLayers.Projection("EPSG:27700"), 
+	units: "m", 
+	maxExtent: bounds, 
+	resolutions: [1763.889,352.778,176.389,88.194,
+	35.278,26.458,17.639,8.819,3.528,1.764,0.882,0.441]} );
+
+	var osfree = new OpenLayers.Layer.WMS( 
+	       "Edina OS OpenData WMS","http://openstream.edina.ac.uk/openstream/wms",
+		os_options, 
+		{attribution: attr});
+
+	map.addLayers([osfree]);
+	map.addControl(new OpenLayers.Control.Navigation());
+	map.addControl(new OpenLayers.Control.PanZoomBar());
+	map.addControl(new OpenLayers.Control.Scale());
+	if (!map.getCenter()) map.zoomToMaxExtent();
+}
+</script>
+
+
+
+<script>window.onload=init;</script>
+</head>
+<body>
+<div id="map" style="width:460px; height:480px;"></div>
+<div id="result"></div>
+
+<script>
+var xmlhttp = new XMLHttpRequest();
+var url = "http://localhost:8080/sparqlr/myarray.txt";
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        myFunction(myArr);
+    }
+}
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+function myFunction(arr) {
+    var out = "";
+    var i;
+    for(i = 0; i < arr.length; i++) {
+        out += '<a href="' + arr[i].url + '">' +
+        arr[i].display + '</a><br>';
+    }
+    document.getElementById("result").innerHTML = out;
+}
+
+
+</script>
+
+</body>
+</html>
